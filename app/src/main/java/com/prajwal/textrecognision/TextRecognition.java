@@ -207,7 +207,6 @@ public class TextRecognition extends AppCompatActivity {
                 }
             }
         });
-
         capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -235,7 +234,6 @@ public class TextRecognition extends AppCompatActivity {
 
 
     }
-
     void showHistory(){
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(TextRecognition.this, R.style.myDialog));
         String data ="";
