@@ -18,4 +18,12 @@
             android:title="Rate Me"
             android:icon="@drawable/icon_star"/>
     </group>
+    <group android:id="@+id/account_menu">
+        <item android:id="@+id/menu_history"
+            android:title="History"/>
+
+
+        <item android:id="@+id/menu_logout"
+            android:title="Logout"/>
+    </group>
 </menu>

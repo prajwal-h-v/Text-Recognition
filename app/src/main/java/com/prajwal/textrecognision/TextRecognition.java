@@ -108,6 +108,8 @@ public class TextRecognition extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         navigationView = (NavigationView) findViewById(R.id.nav_menu);
+        navigationView.getMenu().setGroupVisible(R.id.menu_group, true);
+        navigationView.getMenu().setGroupVisible(R.id.account_menu, false);
         drawerLayout = (DrawerLayout)findViewById(R.id.text_recog_activity);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open,R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
@@ -149,7 +151,13 @@ public class TextRecognition extends AppCompatActivity {
                         dialog.show();
                         drawerLayout.closeDrawer(GravityCompat.START);
                         break;
-
+                    case R.id.menu_logout:
+                        confirmSignout();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        break;
+                    case R.id.menu_history:
+                        showHistory();
+                        break;
                 }
 
                 return true;
@@ -229,8 +237,15 @@ public class TextRecognition extends AppCompatActivity {
 
     void showHistory(){
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(TextRecognition.this, R.style.myDialog));
-        String data = history.getData();
-        data.replace(", ", "\n");
+        String data;
+        try {
+            data = history.getData();
+            data.replace(", ", "\n");
+        }
+        catch (Exception e){}
+        finally {
+            data = "No history";
+        }
         builder.setMessage(data).setTitle(User.getUsername()).setIcon(R.drawable.icon_info);
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -242,7 +257,6 @@ public class TextRecognition extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
     /*
     #######---------------End of onCreate---------------#######
     */
@@ -264,11 +278,11 @@ public class TextRecognition extends AppCompatActivity {
     */
         private void checkLogin(){
             if (!User.islogin){
-                logout.setVisibility(View.GONE);
+                navigationView.getMenu().setGroupVisible(R.id.account_menu, false);
 
             }
             else {
-                logout.setVisibility(View.VISIBLE);
+                navigationView.getMenu().setGroupVisible(R.id.account_menu, true);
             }
         }
     /*
@@ -408,6 +422,7 @@ public class TextRecognition extends AppCompatActivity {
         private void confirmSignout(){
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
             builder.setMessage("Are you sure?").setTitle("Confirm Logout");
+            builder.setCancelable(false);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // User clicked OK button
