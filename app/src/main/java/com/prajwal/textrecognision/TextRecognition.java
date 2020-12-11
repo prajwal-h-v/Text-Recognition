@@ -159,11 +159,9 @@ public class TextRecognition extends AppCompatActivity {
                         showHistory();
                         break;
                 }
-
                 return true;
             }
         });
-
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
