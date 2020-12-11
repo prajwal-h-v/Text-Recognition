@@ -122,7 +122,7 @@ public class TextRecognition extends AppCompatActivity {
                     case R.id.menu_login:
                         if (User.islogin){
                             already_loggedin();
-                            history = new searchHistory(User.getUsername());
+
                         }
                         else {
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -172,6 +172,7 @@ public class TextRecognition extends AppCompatActivity {
                     User.email = firebaseUser.getEmail();
 
                     Toast.makeText(getApplicationContext(), "You are logged in:"+User.email, Toast.LENGTH_SHORT).show();
+                    history = new searchHistory(User.getUsername());
                     User.islogin = true;
 
                     try {
@@ -237,14 +238,13 @@ public class TextRecognition extends AppCompatActivity {
 
     void showHistory(){
         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(TextRecognition.this, R.style.myDialog));
-        String data;
+        String data ="";
         try {
             data = history.getData();
             data.replace(", ", "\n");
         }
-        catch (Exception e){}
-        finally {
-            data = "No history";
+        catch (Exception e){
+            Log.e("History error", e +":"+e.getMessage() );
         }
         builder.setMessage(data).setTitle(User.getUsername()).setIcon(R.drawable.icon_info);
         builder.setCancelable(false);
@@ -256,6 +256,7 @@ public class TextRecognition extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+        System.out.println(data);
     }
     /*
     #######---------------End of onCreate---------------#######
@@ -311,16 +312,20 @@ public class TextRecognition extends AppCompatActivity {
     #######---------------End of detectTextFromImage---------------#######
     */
         private void displayTextFromImage(FirebaseVisionText firebaseVisionText) {
-            List<FirebaseVisionText.TextBlock> blockList = firebaseVisionText.getTextBlocks();
-            if (blockList.size() == 0){
-                Toast.makeText(getApplicationContext(), "No Text Found", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                for(FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()){
-                    text = text +"\n" + block.getText();
+            try {
+                List<FirebaseVisionText.TextBlock> blockList = firebaseVisionText.getTextBlocks();
+                if (blockList.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "No Text Found", Toast.LENGTH_SHORT).show();
+                } else {
+                    for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
+                        text = text + "\n" + block.getText();
+
+                        textView.setText(text);
+                    }
                     history.storeData(text);
-                    textView.setText(text);
                 }
+            }catch (Exception e){
+                Log.e("displayText", e.getMessage());
             }
         }
     /*
@@ -399,9 +404,9 @@ public class TextRecognition extends AppCompatActivity {
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, "New Picture");
             values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
-            //imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            //cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
         }
     /*

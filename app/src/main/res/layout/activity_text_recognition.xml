@@ -33,7 +33,8 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:contentDescription="@string/image_to_be_processed" />
 
         <ProgressBar
             android:id="@+id/progressBar3"
@@ -140,9 +141,9 @@
                 android:background="@color/colorPrimary"
                 android:drawableStart="@drawable/icon_logout"
                 android:drawableTint="@color/colorBlack"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:paddingEnd="15dp"
-                android:paddingLeft="15dp"
+                android:paddingStart="15dp"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

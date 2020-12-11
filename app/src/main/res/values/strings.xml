@@ -23,4 +23,6 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="play">Play</string>
     <string name="forgot_password">Forgot Password? Reset Here</string>
+    <string name="image_to_be_processed">Image to be processed</string>
+    <string name="logout">Logout</string>
 </resources>
