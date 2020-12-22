@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack"
+    tools:context=".Player">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorBlack"
+        android:background="@color/colorPrimary"
+        app:title="@string/app_name" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <TextView
+            android:id="@+id/player_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorGrey"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent" />
+    </ScrollView>
+
+    <Button
+        android:id="@+id/player_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="16dp"
+        android:drawableEnd="@drawable/icon_play"
+        android:drawableTint="@color/colorDarkGreen"
+        android:background="@drawable/custom_border"
+        android:text="@string/play"
+        android:textColor="@color/colorDarkGreen"
+        android:backgroundTint="@color/colorWhite"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/player_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="16dp"
+        android:drawableEnd="@drawable/ic_stop"
+        android:drawableTint="@color/colorPrimary"
+        android:background="@drawable/custom_border"
+        android:text="stop"
+        android:backgroundTint="@color/colorWhite"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

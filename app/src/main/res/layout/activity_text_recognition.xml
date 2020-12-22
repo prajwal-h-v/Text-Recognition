@@ -72,11 +72,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/custom_border"
-                android:backgroundTint="@color/colorPrimary"
-                android:drawableTop="@drawable/icon_camera_white"
+                android:backgroundTint="@color/colorWhite"
+                android:drawableEnd="@drawable/icon_camera_white"
                 android:text="@string/capture"
-                android:drawableTint="@color/colorBlack"
+                android:drawableTint="@color/colorRed"
                 android:textColor="@color/colorBlack"
+                android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/detect_text"
 
@@ -87,32 +88,36 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
             android:background="@drawable/custom_border"
-            android:drawableTop="@drawable/icon_text"
             android:text="@string/detect"
-            android:drawableTint="@color/colorPrimary"
-            android:textColor="@color/colorPrimary"
+            android:drawableEnd="@drawable/icon_text"
+            android:textColor="@color/colorBlack"
             android:textStyle="bold"
+            android:backgroundTint="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent=".48" />
+            app:layout_constraintWidth_percent=".40" />
 
         <Button
             android:id="@+id/btn_play"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/custom_border"
-            android:drawableTop="@drawable/icon_play"
+            android:layout_marginEnd="16dp"
             android:text="@string/play"
+            android:drawableEnd="@drawable/icon_play"
             android:drawableTint="@color/colorPrimary"
-            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/colorWhite"
             android:textStyle="bold"
+            app:layout_constraintWidth_percent="0.40"
+            android:textColor="@color/colorBlack"
+            android:background="@drawable/custom_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent=".48" />
+
+             />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,34 +126,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/nav_menu"
-        android:background="@color/colorBlack"
-        app:itemTextColor="@color/colorPrimary"
-        app:itemIconTint="@color/colorPrimary"
+        android:backgroundTint="@color/colorRed"
+        app:itemTextColor="@color/colorWhite"
+        app:itemIconTint="@color/colorWhite"
         app:menu="@menu/icon_menu"
+        android:padding="5dp"
+        app:itemIconPadding="10dp"
+        app:itemHorizontalPadding="15dp"
+        app:itemShapeInsetTop="5dp"
+        app:itemShapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Nav"
         app:headerLayout="@layout/header_menu"
         android:layout_gravity="start"
         >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
 
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:drawableStart="@drawable/icon_logout"
-                android:drawableTint="@color/colorBlack"
-                android:text="@string/logout"
-                android:paddingEnd="15dp"
-                android:paddingStart="15dp"
-                android:textColor="@color/colorBlack"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

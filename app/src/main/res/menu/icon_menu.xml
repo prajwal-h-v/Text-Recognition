@@ -20,10 +20,12 @@
     </group>
     <group android:id="@+id/account_menu">
         <item android:id="@+id/menu_history"
+            android:icon="@drawable/icon_history"
             android:title="History"/>
 
 
         <item android:id="@+id/menu_logout"
+            android:icon="@drawable/icon_logout"
             android:title="Logout"/>
     </group>
 </menu>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Text Recognition</string>
+    <string name="app_name">Readify</string>
     <string name="str_submit">Log in</string>
     <string name="srt_register">Not registered? Register here</string>
     <string name="capture">Capture Image</string>
@@ -25,4 +25,5 @@
     <string name="forgot_password">Forgot Password? Reset Here</string>
     <string name="image_to_be_processed">Image to be processed</string>
     <string name="logout">Logout</string>
+    <string name="pause">Pause</string>
 </resources>

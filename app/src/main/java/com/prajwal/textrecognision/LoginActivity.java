@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         register = findViewById(R.id.tv_register);
         firebaseAuth = FirebaseAuth.getInstance();
         forgotPassword = findViewById(R.id.resetPassword);
-        progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.splash_progress);
         progressBar.setVisibility(View.GONE);
         bt_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,11 +78,16 @@ public class LoginActivity extends AppCompatActivity {
     private void requestChangePassword(){
         final String[] email = new String[1];
         email[0] = "";
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this,R.style.myDialog);
         builder.setTitle("Reset Password");
+        builder.setCancelable(false);
 
         final EditText input = new EditText(this);
+        input.setBackgroundColor(getColor(R.color.colorBlack));
+        input.setTextColor(getColor(R.color.colorPrimary));
+        input.setHintTextColor(getColor(R.color.colorGrey));
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setHint("Enter your Email");
         builder.setView(input);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

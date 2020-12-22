@@ -1,5 +1,31 @@
 package com.prajwal.textrecognision;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -8,31 +34,7 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.prajwal.textrecognision.Item;
-import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.LayoutInflater;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -43,26 +45,26 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
-
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class TextRecognition extends AppCompatActivity {
-    Button capture, detect, play,logout;
+    Button capture;
+    Button detect;
     ImageView imageView;
-    TextView textView, uname_disp,email_disp;
+    Button play;
+    TextView textView;
     String text;
-    searchHistory history;
+    HistoryActivity history;
+
     FirebaseAuth firebaseAuth;
     NavigationView navigationView;
     ActionBarDrawerToggle drawerToggle;
     Uri imageUri;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
-    LinearLayout header_layout;
     LayoutInflater mInflater;
-    MenuItem login,signup;// = menu.findItem(R.id.menu_my_item);
-    Menu menu;
     private ProgressBar progressBar;
     private static final String appInfo = "Designed and Developed by:\n" +
             "Prajwal H V\n" +
@@ -89,33 +91,26 @@ public class TextRecognition extends AppCompatActivity {
         textView = findViewById(R.id.text_display);
         play = findViewById(R.id.btn_play);
         mInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        logout = findViewById(R.id.btn_logout);
+        history = new HistoryActivity(getApplicationContext());
         progressBar = findViewById(R.id.progressBar3);
         progressBar.setVisibility(View.GONE);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               confirmSignout();
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }
-        });
         firebaseAuth = FirebaseAuth.getInstance();
-
-
-
+        text= "";
         //Adding Custom toolbar
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.setBackgroundColor(getColor(R.color.colorPrimary));
         navigationView = (NavigationView) findViewById(R.id.nav_menu);
         navigationView.getMenu().setGroupVisible(R.id.menu_group, true);
         navigationView.getMenu().setGroupVisible(R.id.account_menu, false);
         drawerLayout = (DrawerLayout)findViewById(R.id.text_recog_activity);
+        //drawerLayout.setBackgroundColor(getColor(R.color.colorRed));
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open,R.string.close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
@@ -127,7 +122,7 @@ public class TextRecognition extends AppCompatActivity {
                         else {
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                         }
-                        drawerLayout.closeDrawer(GravityCompat.START);
+
                         break;
                     case R.id.menu_signup:
                         if (User.islogin) {
@@ -136,7 +131,7 @@ public class TextRecognition extends AppCompatActivity {
                         else {
                             startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
                         }
-                        drawerLayout.closeDrawer(GravityCompat.START);
+
                         break;
                     case R.id.menu_info:
                         AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(TextRecognition.this, R.style.myDialog));
@@ -149,16 +144,17 @@ public class TextRecognition extends AppCompatActivity {
                         });
                         AlertDialog dialog = builder.create();
                         dialog.show();
-                        drawerLayout.closeDrawer(GravityCompat.START);
+
                         break;
                     case R.id.menu_logout:
                         confirmSignout();
-                        drawerLayout.closeDrawer(GravityCompat.START);
+
                         break;
                     case R.id.menu_history:
                         showHistory();
                         break;
                 }
+                drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
@@ -170,7 +166,7 @@ public class TextRecognition extends AppCompatActivity {
                     User.email = firebaseUser.getEmail();
 
                     Toast.makeText(getApplicationContext(), "You are logged in:"+User.email, Toast.LENGTH_SHORT).show();
-                    history = new searchHistory(User.getUsername());
+
                     User.islogin = true;
 
                     try {
@@ -195,13 +191,16 @@ public class TextRecognition extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     if (User.islogin) {
-                        Toast.makeText(getApplicationContext(), "Name:" + User.getUsername(), Toast.LENGTH_SHORT).show();
-                        showHistory();
+                        //Toast.makeText(getApplicationContext(), "Name:" + User.getUsername(), Toast.LENGTH_SHORT).show();
+                        play(text);
                     } else {
-                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        Player p = new Player("Please Login",getApplicationContext());
+                        p.play();
+                        startActivity(new Intent(TextRecognition.this, LoginActivity.class));
                     }
                 }catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "Error:" +e.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Error:" +e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Play:", e.getMessage());
                 }
             }
         });
@@ -224,7 +223,8 @@ public class TextRecognition extends AppCompatActivity {
 
                 }
                 catch (Exception e){
-                    Toast.makeText(getApplicationContext(), "detectTextFromImage:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("detectTextFromImage:",e.getMessage());
+                    progressBar.setVisibility(View.GONE);
                 }
 
             }
@@ -233,30 +233,25 @@ public class TextRecognition extends AppCompatActivity {
 
     }
     void showHistory(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(TextRecognition.this, R.style.myDialog));
-        String data ="";
-        try {
-            data = history.getData();
-            data.replace(", ", "\n");
-        }
-        catch (Exception e){
-            Log.e("History error", e +":"+e.getMessage() );
-        }
-        builder.setMessage(data).setTitle(User.getUsername()).setIcon(R.drawable.icon_info);
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
-        System.out.println(data);
+        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+        startActivity(intent);
     }
     /*
     #######---------------End of onCreate---------------#######
     */
+
+    public void play(final String t){
+        Intent intent = new Intent(TextRecognition.this,Player.class);
+        if (!t.isEmpty()) {
+            intent.putExtra("text", t);
+            startActivity(intent);
+        }
+        else {
+            Log.d("EmptyText", "No text");
+            Player player = new Player("No text to play", getApplicationContext());
+            player.play();
+        }
+    }
         private void already_loggedin(){
 
             AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(TextRecognition.this, R.style.myDialog));
@@ -274,13 +269,7 @@ public class TextRecognition extends AppCompatActivity {
     #######---------------End of already_loggedin---------------#######
     */
         private void checkLogin(){
-            if (!User.islogin){
-                navigationView.getMenu().setGroupVisible(R.id.account_menu, false);
-
-            }
-            else {
-                navigationView.getMenu().setGroupVisible(R.id.account_menu, true);
-            }
+            navigationView.getMenu().setGroupVisible(R.id.account_menu, User.islogin);
         }
     /*
     #######---------------End of checkLogin---------------#######
@@ -298,7 +287,8 @@ public class TextRecognition extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getApplicationContext(), "Error in reading text", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Error in reading text:: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("OnFailure", e.getMessage());
                     progressBar.setVisibility(View.GONE);
                 }
             });
@@ -318,7 +308,8 @@ public class TextRecognition extends AppCompatActivity {
 
                         textView.setText(text);
                     }
-                    history.storeData(text);
+                    if (User.islogin)
+                        history.storeData(User.getUsername(),text);
                 }
             }catch (Exception e){
                 Log.e("displayText", e.getMessage());
