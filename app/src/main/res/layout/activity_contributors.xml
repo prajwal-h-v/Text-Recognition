@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+    android:background="@color/colorBlack"
+android:layout_height="match_parent"
+    android:orientation="vertical"
+tools:context=".contributors">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorBlack"
+        android:background="@color/colorPrimary"
+        app:title="@string/app_name" />
+
+    <TextView
+        android:layout_width="334dp"
+        android:layout_height="49dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="5dp"
+        android:text="APP DEVELOPERS"
+        android:textColor="@color/colorWhite"
+        android:textSize="24dp" />
+<ListView
+    android:id="@+id/simpleView"
+    android:layout_width="wrap_content"
+
+    android:layout_height="wrap_content"
+    android:dividerHeight="10dp"/>
+
+</LinearLayout>

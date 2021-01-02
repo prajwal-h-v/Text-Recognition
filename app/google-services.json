@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1064784406733",
+    "firebase_url": "https://textrecog-447db.firebaseio.com",
+    "project_id": "textrecog-447db",
+    "storage_bucket": "textrecog-447db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064784406733:android:8e2ee4b096c7713906e184",
+        "android_client_info": {
+          "package_name": "com.prajwal.textrecognision"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064784406733-uuv5t2db6l68grsff6v5ro889kba8dg0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc3enbFIuBu_nfsM_gY77zaGSNC16g_mU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064784406733-uuv5t2db6l68grsff6v5ro889kba8dg0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

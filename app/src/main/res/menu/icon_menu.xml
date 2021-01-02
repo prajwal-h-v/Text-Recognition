@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_group">
+    <item android:id="@+id/menu_login"
+        android:icon="@drawable/icon_login"
+        android:title="Login"
+        />
+    <item android:id="@+id/menu_signup"
+        android:icon="@drawable/icon_signup"
+        android:title="Signup"
+        />
+    <item android:id="@+id/menu_info"
+        android:icon="@drawable/icon_info"
+        android:title="Info"
+        />
+        <item android:id="@+id/rateMe"
+            android:title="Rate Me"
+            android:icon="@drawable/icon_star"/>
+    </group>
+    <group android:id="@+id/account_menu">
+        <item android:id="@+id/menu_history"
+            android:icon="@drawable/icon_history"
+            android:title="History"/>
+
+
+        <item android:id="@+id/menu_logout"
+            android:icon="@drawable/icon_logout"
+            android:title="Logout"/>
+    </group>
+</menu>
